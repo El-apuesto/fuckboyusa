@@ -1,1 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Fuckboys USA - Sophisticated Casual Dating</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <i class="fas fa-fire"></i>
+            </div>
+            <h1 class="splash-title">Fuckboys USA</h1>
+            <p class="splash-subtitle">Sophisticated Casual Dating</p>
+        </div>
+    </div>
 
+    <!-- Onboarding Screens -->
+    <div id="onboarding-container" class="screen hidden">
+        <!-- Screen 1: Welcome -->
+        <div data-screen="1" class="onboarding-screen">
+            <div class="onboarding-content">
+                <div class="onboarding-hero">
+                    <div class="hero-icon">
+                        <i class="fas fa-sparkles"></i>
+                    </div>
+                </div>
+                <h2>Welcome to Fuckboys USA</h2>
+                <p>Where style meets substance. No pretense. Just authentic connections.</p>
+                <button class="btn btn-primary btn-lg" onclick="nextOnboarding()">
+                    Get Started <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="onboarding-dots">
+                <div class="onboarding-dot active"></div>
+                <div class="onboarding-dot"></div>
+                <div class="onboarding-dot"></div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Features -->
+        <div data-screen="2" class="onboarding-screen hidden">
+            <div class="onboarding-content">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Smart Matching</h3>
+                        <p>Style-aware matching that gets you</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <i class="fas fa-shield"></i>
+                        </div>
+                        <h3>Verified Profiles</h3>
+                        <p>Real people. Real connections.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Chat & Connect</h3>
+                        <p>Keep it casual or let it evolve</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-lg" onclick="nextOnboarding()">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="onboarding-dots">
+                <div class="onboarding-dot"></div>
+                <div class="onboarding-dot active"></div>
+                <div class="onboarding-dot"></div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Sign Up / Login -->
+        <div data-screen="3" class="onboarding-screen hidden">
+            <div class="onboarding-content">
+                <h2>Let's Get You Started</h2>
+                <p>Join thousands of style-conscious singles</p>
+                <button class="btn btn-primary btn-lg" onclick="showSignup()">
+                    Create Account
+                </button>
+                <button class="btn btn-outline btn-lg" onclick="showLogin()">
+                    Already Have Account?
+                </button>
+            </div>
+            <div class="onboarding-dots">
+                <div class="onboarding-dot"></div>
+                <div class="onboarding-dot"></div>
+                <div class="onboarding-dot active"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup/Login Screen -->
+    <div id="signup-screen" class="screen hidden">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Create Your Account</h2>
+                <p>Join the sophisticated dating revolution</p>
+            </div>
+
+            <form id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="form-label">Display Name</label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="e.g., James, 26" required>
+                </div>
+
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the Terms of Service</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-full">
+                    Create Account
+                </button>
+            </form>
+
+            <p class="auth-footer">
+                Already have an account? <button type="button" onclick="showLogin()" class="link-btn">Sign In</button>
+            </p>
+
+            <button type="button" class="btn-back" onclick="showOnboarding()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen hidden">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to your Fuckboys USA account</p>
+            </div>
+
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="login-email" class="form-label">Email</label>
+                    <input type="email" id="login-email" name="email" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password" class="form-label">Password</label>
+                    <input type="password" id="login-password" name="password" class="form-input" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-full">
+                    Sign In
+                </button>
+            </form>
+
+            <p class="auth-footer">
+                Don't have an account? <button type="button" onclick="showSignup()" class="link-btn">Create One</button>
+            </p>
+
+            <button type="button" class="btn-back" onclick="showOnboarding()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="screen hidden app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <h1>Discover</h1>
+            <div class="header-icons">
+                <button class="icon-btn" onclick="openFilters()">
+                    <i class="fas fa-sliders-h"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Swipe Cards -->
+        <div class="swipe-container">
+            <div class="cards-wrapper">
+                <div class="swipe-card" data-card="1">
+                    <div class="card-content">
+                        <div class="card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                        <div class="card-overlay"></div>
+                        <div class="card-badges">
+                            <div class="badge badge-nope">NOPE</div>
+                            <div class="badge badge-like">LIKE</div>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-header">
+                                <h3>Emma, 25</h3>
+                                <span class="verified-badge">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </div>
+                            <p class="card-subtitle">Marketing Manager • 4 miles away</p>
+                            <p class="card-bio">Passionate about sustainable living ✨</p>
+                            <div class="card-tags">
+                                <span class="tag">Eco-Conscious</span>
+                                <span class="tag">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swipe-card" data-card="2">
+                    <div class="card-content">
+                        <div class="card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                        <div class="card-overlay"></div>
+                        <div class="card-badges">
+                            <div class="badge badge-nope">NOPE</div>
+                            <div class="badge badge-like">LIKE</div>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-header">
+                                <h3>Sophia, 27</h3>
+                                <span class="verified-badge">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </div>
+                            <p class="card-subtitle">Designer • 2 miles away</p>
+                            <p class="card-bio">Fashion enthusiast & brunch lover 🥂</p>
+                            <div class="card-tags">
+                                <span class="tag">Creative</span>
+                                <span class="tag">Foodie</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="action-btn action-btn-nope" onclick="swipeLeft()">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="action-btn action-btn-super" onclick="showSuperLike()">
+                <i class="fas fa-star"></i>
+            </button>
+            <button class="action-btn action-btn-like" onclick="swipeRight()">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Matches Screen -->
+    <div id="matches-screen" class="screen hidden">
+        <div class="app-header">
+            <h1>Matches</h1>
+        </div>
+
+        <div class="matches-list">
+            <div class="match-card" onclick="openChat('user-1')">
+                <div class="match-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                <div class="match-info">
+                    <h3>Emma, 25</h3>
+                    <p class="last-message">Just now</p>
+                </div>
+                <div class="match-indicator">
+                    <span class="unread-badge">1</span>
+                </div>
+            </div>
+
+            <div class="match-card" onclick="openChat('user-2')">
+                <div class="match-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                <div class="match-info">
+                    <h3>Sophia, 27</h3>
+                    <p class="last-message">5 minutes ago</p>
+                </div>
+            </div>
+
+            <div class="match-card" onclick="openChat('user-3')">
+                <div class="match-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                <div class="match-info">
+                    <h3>Olivia, 24</h3>
+                    <p class="last-message">Yesterday</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div id="chat-screen" class="screen hidden">
+        <div class="chat-header">
+            <button class="btn-back" onclick="showMainApp()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="chat-header-info">
+                <h3>Emma, 25</h3>
+                <p>Active now</p>
+            </div>
+        </div>
+
+        <div class="chat-messages">
+            <div class="message message-received">
+                <p>Hey! How's your night going? 😊</p>
+            </div>
+            <div class="message message-sent">
+                <p>Pretty good! Just got back from the gym</p>
+            </div>
+            <div class="message message-received">
+                <p>Nice! What's your usual routine?</p>
+            </div>
+            <div class="message message-sent">
+                <p>Usually hit chest and tris on Mondays</p>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Type a message...">
+            <button class="btn-send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Profile Screen -->
+    <div id="profile-screen" class="screen hidden">
+        <div class="app-header">
+            <h1>Profile</h1>
+            <div class="header-icons">
+                <button class="icon-btn" onclick="openSettings()">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 100%; height: 100%; border-radius: 50%;"></div>
+                </div>
+                <h2>James, 26</h2>
+                <p class="profile-location">New York, NY</p>
+            </div>
+
+            <div class="profile-section">
+                <h3>About</h3>
+                <p>Creative professional with a passion for style and wellness. Always up for authentic conversations and spontaneous adventures.</p>
+            </div>
+
+            <div class="profile-section">
+                <h3>Interests</h3>
+                <div class="interest-tags">
+                    <span class="interest-tag">Fitness</span>
+                    <span class="interest-tag">Fashion</span>
+                    <span class="interest-tag">Food</span>
+                    <span class="interest-tag">Travel</span>
+                    <span class="interest-tag">Music</span>
+                    <span class="interest-tag">Art</span>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3>Looking For</h3>
+                <div class="looking-for-tags">
+                    <span class="looking-tag">Chat</span>
+                    <span class="looking-tag">Friends</span>
+                    <span class="looking-tag">Casual Dating</span>
+                </div>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat">
+                    <span class="stat-value">42</span>
+                    <span class="stat-label">Likes</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">8</span>
+                    <span class="stat-label">Matches</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">128</span>
+                    <span class="stat-label">Views</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-full">Edit Profile</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div id="bottom-nav" class="bottom-nav hidden">
+        <button class="nav-icon active" onclick="showMainApp()" title="Discover">
+            <i class="fas fa-fire"></i>
+            <span>Discover</span>
+        </button>
+        <button class="nav-icon" onclick="showMatches()" title="Matches">
+            <i class="fas fa-heart"></i>
+            <span>Matches</span>
+        </button>
+        <button class="nav-icon" onclick="showProfile()" title="Profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </button>
+    </div>
+
+    <!-- Premium Feature Badge -->
+    <div id="premium-prompt" class="premium-prompt hidden">
+        <div class="premium-card">
+            <h3>Unlock Premium</h3>
+            <p>Get unlimited swipes and advanced filters</p>
+            <button class="btn btn-primary btn-lg" onclick="showPremium()">
+                Upgrade Now
+            </button>
+            <button class="btn btn-outline" onclick="closePremiumPrompt()">
+                Maybe Later
+            </button>
+        </div>
+    </div>
+
+    <!-- Referral Reward Badge -->
+    <div id="referral-badge" class="referral-badge">
+        <button class="referral-btn" onclick="showReferral()">
+            <i class="fas fa-gift"></i>
+            <span class="badge-count">0</span>
+        </button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

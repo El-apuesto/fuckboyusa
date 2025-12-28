@@ -2,434 +2,574 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Fuckboys USA - Sophisticated Casual Dating</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuckboys USA - Sophisticated Dating</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'sage': {
+                            50: '#f6f8f7',
+                            100: '#e3e8e5',
+                            200: '#c7d2cb',
+                            300: '#a4b5ab',
+                            400: '#829388',
+                            500: '#6b7d70',
+                            600: '#5a6b5f',
+                            700: '#4a5850',
+                            800: '#3d4843',
+                            900: '#343c38',
+                        },
+                        'charcoal': {
+                            50: '#f6f6f6',
+                            100: '#e7e7e7',
+                            200: '#d1d1d1',
+                            300: '#b0b0b0',
+                            400: '#888888',
+                            500: '#6d6d6d',
+                            600: '#5d5d5d',
+                            700: '#4f4f4f',
+                            800: '#454545',
+                            900: '#3d3d3d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        .app-container {
+            max-width: 420px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        }
+        .swipe-card {
+            transition: all 0.3s ease;
+            cursor: grab;
+        }
+        .swipe-card:active {
+            cursor: grabbing;
+        }
+        .swipe-card.swiping-left {
+            transform: rotate(-5deg) translateX(-20px);
+        }
+        .swipe-card.swiping-right {
+            transform: rotate(5deg) translateX(20px);
+        }
+        .like-badge, .nope-badge {
+            position: absolute;
+            top: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .like-badge {
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: 2px solid #10b981;
+        }
+        .nope-badge {
+            left: 20px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: 2px solid #ef4444;
+        }
+        .swipe-card.swiping-left .nope-badge,
+        .swipe-card.swiping-right .like-badge {
+            opacity: 1;
+        }
+        .profile-gradient {
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+        }
+        .verification-badge {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .premium-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .bottom-nav {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        .nav-icon {
+            transition: all 0.2s ease;
+        }
+        .nav-icon.active {
+            color: #6b7d70;
+            transform: scale(1.1);
+        }
+        .floating-action {
+            background: linear-gradient(135deg, #6b7d70, #5a6b5f);
+            box-shadow: 0 8px 25px rgba(107,125,112,0.3);
+        }
+        .floating-action:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(107,125,112,0.4);
+        }
+        .chat-bubble {
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .chat-bubble.sent {
+            background: linear-gradient(135deg, #6b7d70, #5a6b5f);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 8px;
+        }
+        .chat-bubble.received {
+            background: #f1f5f9;
+            color: #1e293b;
+            margin-right: auto;
+            border-bottom-left-radius: 8px;
+        }
+        .onboarding-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .onboarding-dot.active {
+            background: #6b7d70;
+            width: 24px;
+            border-radius: 4px;
+        }
+    </style>
+<base target="_blank">
 </head>
-<body>
-    <!-- Splash Screen -->
-    <div id="splash-screen" class="splash-screen">
-        <div class="splash-content">
-            <div class="splash-logo">
-                <i class="fas fa-fire"></i>
+<body class="font-sans">
+    <div class="app-container">
+        <!-- Splash Screen -->
+        <div id="splash-screen" class="fixed inset-0 bg-gradient-to-br from-sage-600 to-sage-800 flex items-center justify-center z-50">
+            <div class="text-center text-white">
+                <div class="w-24 h-24 mx-auto mb-6 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <div class="text-4xl font-bold text-white">🔥</div>
+                </div>
+                <h1 class="text-3xl font-bold mb-2">Fuckboys USA</h1>
+                <p class="text-sage-200 text-sm">Sophisticated Casual Dating</p>
+                <div class="mt-8">
+                    <div class="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto"></div>
+                </div>
             </div>
-            <h1 class="splash-title">Fuckboys USA</h1>
-            <p class="splash-subtitle">Sophisticated Casual Dating</p>
         </div>
-    </div>
 
-    <!-- Onboarding Screens -->
-    <div id="onboarding-container" class="screen hidden">
-        <!-- Screen 1: Welcome -->
-        <div data-screen="1" class="onboarding-screen">
-            <div class="onboarding-content">
-                <div class="onboarding-hero">
-                    <div class="hero-icon">
-                        <i class="fas fa-sparkles"></i>
+        <!-- Onboarding Screens -->
+        <div id="onboarding-container" class="hidden fixed inset-0 bg-white z-40">
+            <!-- Onboarding Screen 1 -->
+            <div class="onboarding-screen h-full flex flex-col" data-screen="1">
+                <div class="flex-1 flex items-center justify-center p-8">
+                    <div class="text-center">
+                        <div class="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-sage-400 to-sage-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-fire text-5xl text-white"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-charcoal-800 mb-4">Welcome to Fuckboys USA</h2>
+                        <p class="text-charcoal-600 text-lg leading-relaxed">Sophisticated dating for style-conscious men seeking authentic connections</p>
                     </div>
                 </div>
-                <h2>Welcome to Fuckboys USA</h2>
-                <p>Where style meets substance. No pretense. Just authentic connections.</p>
-                <button class="btn btn-primary btn-lg" onclick="nextOnboarding()">
-                    Get Started <i class="fas fa-arrow-right"></i>
-                </button>
+                <div class="p-6">
+                    <button class="w-full bg-gradient-to-r from-sage-600 to-sage-700 text-white py-4 rounded-full font-semibold text-lg hover:from-sage-700 hover:to-sage-800 transition-all duration-300" onclick="nextOnboarding()">
+                        Get Started
+                    </button>
+                </div>
             </div>
-            <div class="onboarding-dots">
-                <div class="onboarding-dot active"></div>
-                <div class="onboarding-dot"></div>
-                <div class="onboarding-dot"></div>
-            </div>
-        </div>
 
-        <!-- Screen 2: Features -->
-        <div data-screen="2" class="onboarding-screen hidden">
-            <div class="onboarding-content">
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <i class="fas fa-heart"></i>
+            <!-- Onboarding Screen 2 -->
+            <div class="onboarding-screen hidden h-full flex flex-col" data-screen="2">
+                <div class="flex-1 flex items-center justify-center p-8">
+                    <div class="text-center">
+                        <div class="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-5xl text-white"></i>
                         </div>
-                        <h3>Smart Matching</h3>
-                        <p>Style-aware matching that gets you</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                            <i class="fas fa-shield"></i>
-                        </div>
-                        <h3>Verified Profiles</h3>
-                        <p>Real people. Real connections.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <h3>Chat & Connect</h3>
-                        <p>Keep it casual or let it evolve</p>
+                        <h2 class="text-3xl font-bold text-charcoal-800 mb-4">Verified & Safe</h2>
+                        <p class="text-charcoal-600 text-lg leading-relaxed">Multi-layer verification ensures authentic connections with real people</p>
                     </div>
                 </div>
-                <button class="btn btn-primary btn-lg" onclick="nextOnboarding()">
-                    Continue <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-            <div class="onboarding-dots">
-                <div class="onboarding-dot"></div>
-                <div class="onboarding-dot active"></div>
-                <div class="onboarding-dot"></div>
-            </div>
-        </div>
-
-        <!-- Screen 3: Sign Up / Login -->
-        <div data-screen="3" class="onboarding-screen hidden">
-            <div class="onboarding-content">
-                <h2>Let's Get You Started</h2>
-                <p>Join thousands of style-conscious singles</p>
-                <button class="btn btn-primary btn-lg" onclick="showSignup()">
-                    Create Account
-                </button>
-                <button class="btn btn-outline btn-lg" onclick="showLogin()">
-                    Already Have Account?
-                </button>
-            </div>
-            <div class="onboarding-dots">
-                <div class="onboarding-dot"></div>
-                <div class="onboarding-dot"></div>
-                <div class="onboarding-dot active"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Signup/Login Screen -->
-    <div id="signup-screen" class="screen hidden">
-        <div class="auth-container">
-            <div class="auth-header">
-                <h2>Create Your Account</h2>
-                <p>Join the sophisticated dating revolution</p>
-            </div>
-
-            <form id="signup-form" class="auth-form">
-                <div class="form-group">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" class="form-input" required>
+                <div class="p-6">
+                    <button class="w-full bg-gradient-to-r from-sage-600 to-sage-700 text-white py-4 rounded-full font-semibold text-lg hover:from-sage-700 hover:to-sage-800 transition-all duration-300" onclick="nextOnboarding()">
+                        Continue
+                    </button>
                 </div>
-
-                <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" name="password" class="form-input" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="name" class="form-label">Display Name</label>
-                    <input type="text" id="name" name="name" class="form-input" placeholder="e.g., James, 26" required>
-                </div>
-
-                <div class="form-group checkbox">
-                    <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I agree to the Terms of Service</label>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-lg btn-full">
-                    Create Account
-                </button>
-            </form>
-
-            <p class="auth-footer">
-                Already have an account? <button type="button" onclick="showLogin()" class="link-btn">Sign In</button>
-            </p>
-
-            <button type="button" class="btn-back" onclick="showOnboarding()">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
-        </div>
-    </div>
-
-    <!-- Login Screen -->
-    <div id="login-screen" class="screen hidden">
-        <div class="auth-container">
-            <div class="auth-header">
-                <h2>Welcome Back</h2>
-                <p>Sign in to your Fuckboys USA account</p>
             </div>
 
-            <form id="login-form" class="auth-form">
-                <div class="form-group">
-                    <label for="login-email" class="form-label">Email</label>
-                    <input type="email" id="login-email" name="email" class="form-input" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="login-password" class="form-label">Password</label>
-                    <input type="password" id="login-password" name="password" class="form-input" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-lg btn-full">
-                    Sign In
-                </button>
-            </form>
-
-            <p class="auth-footer">
-                Don't have an account? <button type="button" onclick="showSignup()" class="link-btn">Create One</button>
-            </p>
-
-            <button type="button" class="btn-back" onclick="showOnboarding()">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
-        </div>
-    </div>
-
-    <!-- Main App -->
-    <div id="main-app" class="screen hidden app-container">
-        <!-- Header -->
-        <div class="app-header">
-            <h1>Discover</h1>
-            <div class="header-icons">
-                <button class="icon-btn" onclick="openFilters()">
-                    <i class="fas fa-sliders-h"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Swipe Cards -->
-        <div class="swipe-container">
-            <div class="cards-wrapper">
-                <div class="swipe-card" data-card="1">
-                    <div class="card-content">
-                        <div class="card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-                        <div class="card-overlay"></div>
-                        <div class="card-badges">
-                            <div class="badge badge-nope">NOPE</div>
-                            <div class="badge badge-like">LIKE</div>
+            <!-- Onboarding Screen 3 -->
+            <div class="onboarding-screen hidden h-full flex flex-col" data-screen="3">
+                <div class="flex-1 flex items-center justify-center p-8">
+                    <div class="text-center">
+                        <div class="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-brain text-5xl text-white"></i>
                         </div>
-                        <div class="card-info">
-                            <div class="card-header">
-                                <h3>Emma, 25</h3>
-                                <span class="verified-badge">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                            </div>
-                            <p class="card-subtitle">Marketing Manager • 4 miles away</p>
-                            <p class="card-bio">Passionate about sustainable living ✨</p>
-                            <div class="card-tags">
-                                <span class="tag">Eco-Conscious</span>
-                                <span class="tag">Active</span>
+                        <h2 class="text-3xl font-bold text-charcoal-800 mb-4">AI-Powered Matching</h2>
+                        <p class="text-charcoal-600 text-lg leading-relaxed">Style compatibility algorithms connect you with like-minded individuals</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <button class="w-full bg-gradient-to-r from-sage-600 to-sage-700 text-white py-4 rounded-full font-semibold text-lg hover:from-sage-700 hover:to-sage-800 transition-all duration-300" onclick="showSignup()">
+                        Create Account
+                    </button>
+                </div>
+            </div>
+
+            <!-- Onboarding Dots -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                <div class="onboarding-dot active" data-dot="1"></div>
+                <div class="onboarding-dot" data-dot="2"></div>
+                <div class="onboarding-dot" data-dot="3"></div>
+            </div>
+        </div>
+
+        <!-- Signup Screen -->
+        <div id="signup-screen" class="hidden h-full bg-white overflow-y-auto pb-20">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center">
+                    <button onclick="showOnboarding()" class="mr-4 p-2 hover:bg-gray-100 rounded-full">
+                        <i class="fas fa-arrow-left text-charcoal-600"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-charcoal-800">Create Your Profile</h2>
+                </div>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-sage-400 to-sage-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-camera text-2xl text-white"></i>
+                    </div>
+                    <button class="text-sage-600 font-semibold">Add Profile Photo</button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-charcoal-700 mb-2">Name</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-sage-500" placeholder="Enter your name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-charcoal-700 mb-2">Age</label>
+                        <input type="number" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-sage-500" placeholder="25" min="18" max="99">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-charcoal-700 mb-2">Location</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-sage-500" placeholder="City, State">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-charcoal-700 mb-2">Occupation</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-sage-500" placeholder="Marketing Manager">
+                    </div>
+                </div>
+
+                <button class="w-full bg-gradient-to-r from-sage-600 to-sage-700 text-white py-4 rounded-full font-semibold text-lg hover:from-sage-700 hover:to-sage-800 transition-all duration-300" onclick="showMainApp()">
+                    Continue to Style Preferences
+                </button>
+            </div>
+        </div>
+
+        <!-- Main App Interface -->
+        <div id="main-app" class="hidden h-full flex flex-col pb-20">
+            <!-- Header -->
+            <div class="bg-white border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-sage-400 to-sage-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">🔥</span>
+                        </div>
+                        <h1 class="text-xl font-bold text-charcoal-800">Fuckboys USA</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-2 hover:bg-gray-100 rounded-full">
+                            <i class="fas fa-filter text-charcoal-600"></i>
+                        </button>
+                        <button class="p-2 hover:bg-gray-100 rounded-full">
+                            <i class="fas fa-cog text-charcoal-600"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Swipe Interface -->
+            <div class="flex-1 bg-gray-50 p-4">
+                <div class="relative h-full flex items-center justify-center">
+                    <!-- Card Stack -->
+                    <div class="w-full max-w-sm">
+                        <!-- Card 1 (Top) -->
+                        <div class="swipe-card absolute inset-0 bg-white rounded-2xl shadow-xl overflow-hidden" data-card="1">
+                            <div class="relative h-full">
+                                <div class="h-96 bg-gradient-to-br from-blue-400 to-purple-500"></div>
+                                <div class="absolute inset-0 profile-gradient"></div>
+                                <div class="absolute top-4 left-4 right-4 flex justify-between items-start">
+                                    <div class="nope-badge">NOPE</div>
+                                    <div class="like-badge">LIKE</div>
+                                </div>
+                                <div class="absolute bottom-6 left-6 right-6 text-white">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h3 class="text-2xl font-bold">Sarah, 26</h3>
+                                        <div class="verification-badge">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm opacity-90 mb-2">Fashion Designer • 5 miles away</p>
+                                    <p class="text-sm opacity-80">Loves vintage fashion and weekend brunches 🥂</p>
+                                    <div class="flex space-x-2 mt-3">
+                                        <span class="bg-white/20 px-3 py-1 rounded-full text-xs">Style Enthusiast</span>
+                                        <span class="bg-white/20 px-3 py-1 rounded-full text-xs">Creative</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="swipe-card" data-card="2">
-                    <div class="card-content">
-                        <div class="card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                        <div class="card-overlay"></div>
-                        <div class="card-badges">
-                            <div class="badge badge-nope">NOPE</div>
-                            <div class="badge badge-like">LIKE</div>
-                        </div>
-                        <div class="card-info">
-                            <div class="card-header">
-                                <h3>Sophia, 27</h3>
-                                <span class="verified-badge">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                            </div>
-                            <p class="card-subtitle">Designer • 2 miles away</p>
-                            <p class="card-bio">Fashion enthusiast & brunch lover 🥂</p>
-                            <div class="card-tags">
-                                <span class="tag">Creative</span>
-                                <span class="tag">Foodie</span>
+                        <!-- Card 2 -->
+                        <div class="swipe-card absolute inset-0 bg-white rounded-2xl shadow-xl overflow-hidden" data-card="2" style="transform: scale(0.95); z-index: -1;">
+                            <div class="relative h-full">
+                                <div class="h-96 bg-gradient-to-br from-pink-400 to-red-500"></div>
+                                <div class="absolute inset-0 profile-gradient"></div>
+                                <div class="absolute bottom-6 left-6 right-6 text-white">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h3 class="text-2xl font-bold">Jessica, 28</h3>
+                                    </div>
+                                    <p class="text-sm opacity-90 mb-2">Marketing Manager • 3 miles away</p>
+                                    <p class="text-sm opacity-80">Passionate about sustainable fashion ☀️</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="action-btn action-btn-nope" onclick="swipeLeft()">
-                <i class="fas fa-times"></i>
-            </button>
-            <button class="action-btn action-btn-super" onclick="showSuperLike()">
-                <i class="fas fa-star"></i>
-            </button>
-            <button class="action-btn action-btn-like" onclick="swipeRight()">
-                <i class="fas fa-heart"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- Matches Screen -->
-    <div id="matches-screen" class="screen hidden">
-        <div class="app-header">
-            <h1>Matches</h1>
-        </div>
-
-        <div class="matches-list">
-            <div class="match-card" onclick="openChat('user-1')">
-                <div class="match-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-                <div class="match-info">
-                    <h3>Emma, 25</h3>
-                    <p class="last-message">Just now</p>
-                </div>
-                <div class="match-indicator">
-                    <span class="unread-badge">1</span>
-                </div>
-            </div>
-
-            <div class="match-card" onclick="openChat('user-2')">
-                <div class="match-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                <div class="match-info">
-                    <h3>Sophia, 27</h3>
-                    <p class="last-message">5 minutes ago</p>
-                </div>
-            </div>
-
-            <div class="match-card" onclick="openChat('user-3')">
-                <div class="match-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
-                <div class="match-info">
-                    <h3>Olivia, 24</h3>
-                    <p class="last-message">Yesterday</p>
+            <!-- Action Buttons -->
+            <div class="bg-white p-6 border-t border-gray-200">
+                <div class="flex items-center justify-center space-x-6">
+                    <button class="w-14 h-14 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors" onclick="swipeLeft()">
+                        <i class="fas fa-times text-2xl text-red-500"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-blue-100 hover:bg-blue-200 rounded-full flex items-center justify-center transition-colors">
+                        <i class="fas fa-star text-blue-500"></i>
+                    </button>
+                    <button class="w-14 h-14 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors" onclick="swipeRight()">
+                        <i class="fas fa-heart text-2xl text-green-500"></i>
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Chat Screen -->
-    <div id="chat-screen" class="screen hidden">
-        <div class="chat-header">
-            <button class="btn-back" onclick="showMainApp()">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <div class="chat-header-info">
-                <h3>Emma, 25</h3>
-                <p>Active now</p>
+        <!-- Matches Screen -->
+        <div id="matches-screen" class="hidden h-full flex flex-col bg-gray-50 pb-20">
+            <div class="bg-white border-b border-gray-200 px-6 py-4">
+                <h2 class="text-xl font-semibold text-charcoal-800">Matches</h2>
+            </div>
+            <div class="flex-1 p-4 overflow-y-auto">
+                <div class="space-y-4">
+                    <!-- Match Item -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm flex items-center space-x-4">
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-blue-500 rounded-full"></div>
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                                <i class="fas fa-heart text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2">
+                                <h3 class="font-semibold text-charcoal-800">Sarah</h3>
+                                <div class="verification-badge">
+                                    <i class="fas fa-check text-xs"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-charcoal-600">You both like vintage fashion</p>
+                            <p class="text-xs text-charcoal-500">2 hours ago</p>
+                        </div>
+                        <button class="bg-sage-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-sage-700 transition-colors" onclick="openChat('sarah')">
+                            Message
+                        </button>
+                    </div>
+
+                    <!-- Another Match -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm flex items-center space-x-4">
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full"></div>
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                                <i class="fas fa-heart text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-charcoal-800">Jessica</h3>
+                            <p class="text-sm text-charcoal-600">Style compatibility: 92%</p>
+                            <p class="text-xs text-charcoal-500">1 day ago</p>
+                        </div>
+                        <button class="bg-sage-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-sage-700 transition-colors">
+                            Message
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="chat-messages">
-            <div class="message message-received">
-                <p>Hey! How's your night going? 😊</p>
+        <!-- Chat Screen -->
+        <div id="chat-screen" class="hidden h-full flex flex-col pb-20">
+            <div class="bg-white border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center">
+                    <button onclick="showMatches()" class="mr-4 p-2 hover:bg-gray-100 rounded-full">
+                        <i class="fas fa-arrow-left text-charcoal-600"></i>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-full"></div>
+                        <div>
+                            <h3 class="font-semibold text-charcoal-800">Sarah</h3>
+                            <p class="text-xs text-green-600">Online now</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="message message-sent">
-                <p>Pretty good! Just got back from the gym</p>
+            <div class="flex-1 bg-gray-50 p-4 space-y-4 overflow-y-auto">
+                <!-- Chat Messages -->
+                <div class="chat-bubble received p-3 rounded-2xl">
+                    <p class="text-sm">Hey! I love your style choices 😊</p>
+                </div>
+                <div class="chat-bubble sent p-3 rounded-2xl">
+                    <p class="text-sm">Thanks! Your vintage aesthetic is amazing too</p>
+                </div>
+                <div class="chat-bubble received p-3 rounded-2xl">
+                    <p class="text-sm">Thanks! So what brings you to Fuckboys USA?</p>
+                </div>
             </div>
-            <div class="message message-received">
-                <p>Nice! What's your usual routine?</p>
-            </div>
-            <div class="message message-sent">
-                <p>Usually hit chest and tris on Mondays</p>
+            <div class="bg-white border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <input type="text" placeholder="Type a message..." class="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-sage-500 focus:border-sage-500">
+                    <button class="w-12 h-12 bg-gradient-to-r from-sage-600 to-sage-700 text-white rounded-full flex items-center justify-center hover:from-sage-700 hover:to-sage-800 transition-all duration-300">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="chat-input-area">
-            <input type="text" class="chat-input" placeholder="Type a message...">
-            <button class="btn-send">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
+        <!-- Profile Screen -->
+        <div id="profile-screen" class="hidden h-full flex-col bg-gray-50 overflow-y-auto pb-20">
+            <div class="bg-white border-b border-gray-200 px-6 py-4">
+                <h2 class="text-xl font-semibold text-charcoal-800">Profile</h2>
+            </div>
+            <div class="flex-1 p-6">
+                <div class="text-center mb-8">
+                    <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-sage-400 to-sage-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-charcoal-800">Your Profile</h3>
+                    <p class="text-charcoal-600">Complete your profile to get better matches</p>
+                </div>
 
-    <!-- Profile Screen -->
-    <div id="profile-screen" class="screen hidden">
-        <div class="app-header">
-            <h1>Profile</h1>
-            <div class="header-icons">
-                <button class="icon-btn" onclick="openSettings()">
-                    <i class="fas fa-cog"></i>
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                        <h4 class="font-semibold text-charcoal-800 mb-3">Verification Status</h4>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-camera text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-charcoal-800">Photo Verification</p>
+                                    <p class="text-sm text-charcoal-600">Verify your photos</p>
+                                </div>
+                            </div>
+                            <button class="bg-sage-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-sage-700 transition-colors">
+                                Verify
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                        <h4 class="font-semibold text-charcoal-800 mb-3">Style Preferences</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-charcoal-700">Fashion Style</span>
+                                <span class="text-sage-600 font-medium">Modern Classic</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-charcoal-700">Grooming Level</span>
+                                <span class="text-sage-600 font-medium">Meticulous</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-charcoal-700">Lifestyle</span>
+                                <span class="text-sage-600 font-medium">Urban Professional</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                        <h4 class="font-semibold text-charcoal-800 mb-3">Account Settings</h4>
+                        <div class="space-y-3">
+                            <button class="w-full text-left py-3 border-b border-gray-100 hover:bg-gray-50 px-2 rounded">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-charcoal-700">Privacy Settings</span>
+                                    <i class="fas fa-chevron-right text-charcoal-400"></i>
+                                </div>
+                            </button>
+                            <button class="w-full text-left py-3 border-b border-gray-100 hover:bg-gray-50 px-2 rounded">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-charcoal-700">Notifications</span>
+                                    <i class="fas fa-chevron-right text-charcoal-400"></i>
+                                </div>
+                            </button>
+                            <button class="w-full text-left py-3 hover:bg-gray-50 px-2 rounded">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-charcoal-700">Get Premium</span>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="premium-badge">PREMIUM</span>
+                                        <i class="fas fa-chevron-right text-charcoal-400"></i>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div id="bottom-nav" class="hidden bottom-nav fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[420px] px-6 py-4 z-30">
+            <div class="flex items-center justify-around">
+                <button class="nav-icon flex flex-col items-center space-y-1 text-charcoal-600 hover:text-sage-600 transition-colors active" onclick="showMainApp()">
+                    <i class="fas fa-fire text-xl"></i>
+                    <span class="text-xs font-medium">Swipe</span>
+                </button>
+                <button class="nav-icon flex flex-col items-center space-y-1 text-charcoal-600 hover:text-sage-600 transition-colors" onclick="showMatches()">
+                    <i class="fas fa-heart text-xl"></i>
+                    <span class="text-xs font-medium">Matches</span>
+                </button>
+                <button class="nav-icon flex flex-col items-center space-y-1 text-charcoal-600 hover:text-sage-600 transition-colors">
+                    <i class="fas fa-plus text-xl"></i>
+                    <span class="text-xs font-medium">Boost</span>
+                </button>
+                <button class="nav-icon flex flex-col items-center space-y-1 text-charcoal-600 hover:text-sage-600 transition-colors" onclick="showProfile()">
+                    <i class="fas fa-user text-xl"></i>
+                    <span class="text-xs font-medium">Profile</span>
                 </button>
             </div>
         </div>
-
-        <div class="profile-content">
-            <div class="profile-header">
-                <div class="profile-avatar">
-                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 100%; height: 100%; border-radius: 50%;"></div>
-                </div>
-                <h2>James, 26</h2>
-                <p class="profile-location">New York, NY</p>
-            </div>
-
-            <div class="profile-section">
-                <h3>About</h3>
-                <p>Creative professional with a passion for style and wellness. Always up for authentic conversations and spontaneous adventures.</p>
-            </div>
-
-            <div class="profile-section">
-                <h3>Interests</h3>
-                <div class="interest-tags">
-                    <span class="interest-tag">Fitness</span>
-                    <span class="interest-tag">Fashion</span>
-                    <span class="interest-tag">Food</span>
-                    <span class="interest-tag">Travel</span>
-                    <span class="interest-tag">Music</span>
-                    <span class="interest-tag">Art</span>
-                </div>
-            </div>
-
-            <div class="profile-section">
-                <h3>Looking For</h3>
-                <div class="looking-for-tags">
-                    <span class="looking-tag">Chat</span>
-                    <span class="looking-tag">Friends</span>
-                    <span class="looking-tag">Casual Dating</span>
-                </div>
-            </div>
-
-            <div class="profile-stats">
-                <div class="stat">
-                    <span class="stat-value">42</span>
-                    <span class="stat-label">Likes</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">8</span>
-                    <span class="stat-label">Matches</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">128</span>
-                    <span class="stat-label">Views</span>
-                </div>
-            </div>
-
-            <button class="btn btn-primary btn-lg btn-full">Edit Profile</button>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <div id="bottom-nav" class="bottom-nav hidden">
-        <button class="nav-icon active" onclick="showMainApp()" title="Discover">
-            <i class="fas fa-fire"></i>
-            <span>Discover</span>
-        </button>
-        <button class="nav-icon" onclick="showMatches()" title="Matches">
-            <i class="fas fa-heart"></i>
-            <span>Matches</span>
-        </button>
-        <button class="nav-icon" onclick="showProfile()" title="Profile">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </button>
-    </div>
-
-    <!-- Premium Feature Badge -->
-    <div id="premium-prompt" class="premium-prompt hidden">
-        <div class="premium-card">
-            <h3>Unlock Premium</h3>
-            <p>Get unlimited swipes and advanced filters</p>
-            <button class="btn btn-primary btn-lg" onclick="showPremium()">
-                Upgrade Now
-            </button>
-            <button class="btn btn-outline" onclick="closePremiumPrompt()">
-                Maybe Later
-            </button>
-        </div>
-    </div>
-
-    <!-- Referral Reward Badge -->
-    <div id="referral-badge" class="referral-badge">
-        <button class="referral-btn" onclick="showReferral()">
-            <i class="fas fa-gift"></i>
-            <span class="badge-count">0</span>
-        </button>
     </div>
 
     <script src="app.js"></script>

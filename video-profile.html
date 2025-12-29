@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Video Profile - fuckboys usa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0a0a0a;
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .header {
+            padding: 16px;
+            border-bottom: 1px solid #262626;
+            background: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-gradient {
+            background: linear-gradient(to right, #ec4899, #a855f7, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 4px;
+            background: #262626;
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(to right, #ec4899, #a855f7);
+        }
+
+        .instruction-card {
+            background: #171717;
+            border: 1px solid #262626;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .instruction-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            background: linear-gradient(to right, #f9a8d4, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .instruction-text {
+            color: #d4d4d4;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .tip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #c084fc;
+            margin-top: 12px;
+        }
+
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            aspect-ratio: 9/16;
+            max-height: 600px;
+        }
+
+        #video-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .recording-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: rgba(239, 68, 68, 0.9);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .recording-indicator.active {
+            display: flex;
+        }
+
+        .rec-dot {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #262626;
+            color: white;
+            border: 1px solid #404040;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .clips-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .clip-thumbnail {
+            aspect-ratio: 9/16;
+            background: #262626;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #404040;
+        }
+
+        .clip-thumbnail.recorded {
+            border-color: #10b981;
+        }
+
+        .clip-number {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .clip-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .complete-message {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .complete-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <span class="logo-gradient">fuckboys</span>
+            <span> usa.com</span>
+        </div>
+        <button class="btn-secondary" style="padding: 8px 16px; font-size: 14px;" onclick="window.location.href='index.html'">← Back</button>
+    </div>
+
+    <div class="container">
+        <!-- Progress Bar -->
+        <div class="progress-bar" id="progress-bar">
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+        </div>
+
+        <!-- Recording Screen -->
+        <div id="recording-screen">
+            <!-- Instruction Card -->
+            <div class="instruction-card">
+                <div class="instruction-title" id="instruction-title">Clip 1: The Introduction</div>
+                <div class="instruction-text" id="instruction-text">
+                    Hold your phone at eye level. Look directly at the camera, smile naturally, and say your name. Keep it confident and genuine!
+                </div>
+                <div class="tip-badge">
+                    💡 Tip: Make sure you're in good lighting
+                </div>
+            </div>
+
+            <!-- Video Container -->
+            <div class="video-container">
+                <video id="video-preview" autoplay playsinline muted></video>
+                <div class="recording-indicator" id="recording-indicator">
+                    <div class="rec-dot"></div>
+                    <span>REC</span>
+                </div>
+                <div class="timer" id="timer">0:00</div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button class="btn btn-secondary" id="retake-btn" onclick="retakeClip()" style="display: none;">
+                    🔄 Retake
+                </button>
+                <button class="btn btn-primary" id="record-btn" onclick="toggleRecording()">
+                    ⏺ Start Recording
+                </button>
+                <button class="btn btn-success" id="next-btn" onclick="nextClip()" style="display: none;">
+                    Next Clip →
+                </button>
+            </div>
+
+            <!-- Clips Preview -->
+            <div class="clips-preview" id="clips-preview">
+                <div class="clip-thumbnail" id="clip-1">
+                    <div class="clip-number">1</div>
+                </div>
+                <div class="clip-thumbnail" id="clip-2">
+                    <div class="clip-number">2</div>
+                </div>
+                <div class="clip-thumbnail" id="clip-3">
+                    <div class="clip-number">3</div>
+                </div>
+                <div class="clip-thumbnail" id="clip-4">
+                    <div class="clip-number">4</div>
+                </div>
+                <div class="clip-thumbnail" id="clip-5">
+                    <div class="clip-number">5</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complete Screen -->
+        <div id="complete-screen" class="hidden">
+            <div class="complete-message">
+                <div class="complete-icon">🎉</div>
+                <h2 style="font-size: 28px; margin-bottom: 16px; background: linear-gradient(to right, #ec4899, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Video Profile Complete!
+                </h2>
+                <p style="color: #a3a3a3; margin-bottom: 30px;">
+                    AI is now editing your clips into an amazing profile video...
+                </p>
+                <button class="btn btn-primary" onclick="processVideo()">
+                    ✨ Process with AI
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Instructions for each clip
+        const instructions = [
+            {
+                title: "Clip 1: The Introduction",
+                text: "Hold your phone at eye level. Look directly at the camera, smile naturally, and say your name. Keep it confident and genuine!",
+                tip: "💡 Tip: Make sure you're in good lighting",
+                duration: 5
+            },
+            {
+                title: "Clip 2: The Walk-By",
+                text: "Place your phone on a stable surface at chest height. Walk past the camera at a medium pace from left to right. Glance at the camera as you pass.",
+                tip: "💡 Tip: Walk naturally, don't rush",
+                duration: 7
+            },
+            {
+                title: "Clip 3: The Confidence Shot",
+                text: "Hold phone at a 45° angle. Run your hand through your hair slowly while looking at the camera. Keep that confident energy!",
+                tip: "💡 Tip: Relax and be smooth",
+                duration: 5
+            },
+            {
+                title: "Clip 4: Lifestyle Moment",
+                text: "Show yourself doing something you love - working out, cooking, creating, anything! Let your personality shine through.",
+                tip: "💡 Tip: Be authentic, show what makes you unique",
+                duration: 8
+            },
+            {
+                title: "Clip 5: The Closer",
+                text: "Close-up shot. Give a slight smirk or genuine smile. Hold for 3 seconds. This is your signature look!",
+                tip: "💡 Tip: Think of something that makes you happy",
+                duration: 4
+            }
+        ];
+
+        let currentClip = 0;
+        let mediaRecorder;
+        let recordedChunks = [];
+        let clips = [];
+        let stream;
+        let timerInterval;
+        let recordingTime = 0;
+
+        // Initialize camera
+        async function initCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user', width: 1080, height: 1920 }, 
+                    audio: true 
+                });
+                document.getElementById('video-preview').srcObject = stream;
+            } catch (err) {
+                alert('Camera access denied. Please enable camera permissions.');
+                console.error('Camera error:', err);
+            }
+        }
+
+        // Update instruction
+        function updateInstruction() {
+            const instruction = instructions[currentClip];
+            document.getElementById('instruction-title').textContent = instruction.title;
+            document.getElementById('instruction-text').textContent = instruction.text;
+            document.querySelector('.tip-badge').textContent = instruction.tip;
+            
+            // Update progress
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((step, index) => {
+                if (index <= currentClip) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        // Toggle recording
+        function toggleRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        // Start recording
+        function startRecording() {
+            recordedChunks = [];
+            recordingTime = 0;
+            
+            mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+            
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) {
+                    recordedChunks.push(e.data);
+                }
+            };
+            
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                clips[currentClip] = blob;
+                
+                // Show thumbnail
+                const thumbnail = document.getElementById(`clip-${currentClip + 1}`);
+                thumbnail.classList.add('recorded');
+                
+                const videoEl = document.createElement('video');
+                videoEl.src = URL.createObjectURL(blob);
+                videoEl.className = 'clip-video';
+                videoEl.muted = true;
+                videoEl.loop = true;
+                videoEl.play();
+                thumbnail.appendChild(videoEl);
+                
+                // Show next/retake buttons
+                document.getElementById('record-btn').style.display = 'none';
+                document.getElementById('retake-btn').style.display = 'block';
+                document.getElementById('next-btn').style.display = 'block';
+            };
+            
+            mediaRecorder.start();
+            document.getElementById('recording-indicator').classList.add('active');
+            document.getElementById('record-btn').textContent = '⏹ Stop Recording';
+            document.getElementById('record-btn').classList.remove('btn-primary');
+            document.getElementById('record-btn').classList.add('btn-secondary');
+            
+            // Start timer
+            timerInterval = setInterval(() => {
+                recordingTime++;
+                const minutes = Math.floor(recordingTime / 60);
+                const seconds = recordingTime % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Auto-stop at max duration
+                const maxDuration = instructions[currentClip].duration;
+                if (recordingTime >= maxDuration) {
+                    stopRecording();
+                }
+            }, 1000);
+        }
+
+        // Stop recording
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                clearInterval(timerInterval);
+                document.getElementById('recording-indicator').classList.remove('active');
+            }
+        }
+
+        // Retake clip
+        function retakeClip() {
+            clips[currentClip] = null;
+            const thumbnail = document.getElementById(`clip-${currentClip + 1}`);
+            thumbnail.classList.remove('recorded');
+            const video = thumbnail.querySelector('.clip-video');
+            if (video) video.remove();
+            
+            document.getElementById('record-btn').style.display = 'block';
+            document.getElementById('record-btn').textContent = '⏺ Start Recording';
+            document.getElementById('record-btn').classList.add('btn-primary');
+            document.getElementById('record-btn').classList.remove('btn-secondary');
+            document.getElementById('retake-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('timer').textContent = '0:00';
+        }
+
+        // Next clip
+        function nextClip() {
+            currentClip++;
+            
+            if (currentClip >= instructions.length) {
+                // All clips recorded
+                document.getElementById('recording-screen').classList.add('hidden');
+                document.getElementById('complete-screen').classList.remove('hidden');
+            } else {
+                updateInstruction();
+                retakeClip();
+            }
+        }
+
+        // Process video (upload to Supabase)
+        async function processVideo() {
+            alert('Video processing will be implemented with Supabase Storage + AI editing API. Clips saved locally for now!');
+            console.log('Recorded clips:', clips);
+            
+            // TODO: Upload to Supabase Storage
+            // TODO: Call AI video editing API
+            // TODO: Save processed video URL to user profile
+            
+            window.location.href = 'index.html';
+        }
+
+        // Initialize on load
+        initCamera();
+        updateInstruction();
+    </script>
+</body>
+</html>

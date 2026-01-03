@@ -1,7 +1,6 @@
 // Supabase Configuration
-// Replace these with your actual Supabase credentials from your project dashboard
-const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE'; // e.g., 'https://xxxxx.supabase.co'
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE'; // Long JWT token from Supabase dashboard
+const SUPABASE_URL = 'https://sngsmzgolbgafjuzidbi.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuZ3NtemdvbGJnYWZqdXppZGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzM2ODksImV4cCI6MjA4MjUwOTY4OX0.L1qn-hSeDsl_yYFg2yLdKjuBjCyuvAoDQybr0UD4B8I';
 
 // Initialize Supabase client
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
